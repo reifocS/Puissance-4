@@ -9,7 +9,7 @@
 #include "commun.h"
 #include "T2d.h"
 #pragma warning(disable:4996)
-//#pragma warning(disable:4018) //'<='†: incompatibilitÈ signed / unsigned	Puissance4	/T2d.cpp	135
+//#pragma warning(disable:4018) //'<='¬†: incompatibilit√© signed / unsigned	Puissance4	/T2d.cpp	135
 
 void init(T2d* t, unsigned int largeur, unsigned int hauteur) {
 	assert((hauteur * largeur) <= (TAILLE_MAX_GRILLE));
@@ -31,10 +31,10 @@ unsigned int getHauteur(const T2d* t) {
 
 char getSymbole(unsigned int i) {
 	assert(i < 3);
-	static const char symboles[3] = { '.', 'X', 'O' };// le premier ÈlÈment reprÈsente le vide
-	// le tableau est intialisÈ au premier appel
-	// il n'est pas dÈtruit en sortant de la fonction
-	// il est stockÈ avec les variables globales
+	static const char symboles[3] = { '.', 'X', 'O' };// le premier √©l√©ment repr√©sente le vide
+	// le tableau est intialis√© au premier appel
+	// il n'est pas d√©truit en sortant de la fonction
+	// il est stock√© avec les variables globales
 	// avant le main()
 	return symboles[i];
 }
@@ -73,10 +73,10 @@ void viderGrille(T2d* t) {
 }
 
 bool estVictoire(const T2d* t, char col, unsigned int lig) {
-	int sommeColonne, sommeLigne, sommeDiagDroite, sommeDiagGauche; // instanciation des diffÈrentes sommes utiles pour vÈrifier les 4 alignements possibles (--,|,/,\)
-	sommeColonne = sommeLigne = sommeDiagDroite = sommeDiagGauche = 0; // initialisation des sommes ‡ 0
-	char symbole = get(t, col, lig); // on rÈcupËre le symbole du dernier jeton jouÈ
-	//verification verticale (|), on note qu'il n'y pas besoin de vÈrifier au dessus du dernier jeton jouÈ.
+	int sommeColonne, sommeLigne, sommeDiagDroite, sommeDiagGauche; // instanciation des diff√©rentes sommes utiles pour v√©rifier les 4 alignements possibles (--,|,/,\)
+	sommeColonne = sommeLigne = sommeDiagDroite = sommeDiagGauche = 0; // initialisation des sommes √† 0
+	char symbole = get(t, col, lig); // on r√©cup√®re le symbole du dernier jeton jou√©
+	//verification verticale (|), on note qu'il n'y pas besoin de v√©rifier au dessus du dernier jeton jou√©.
 	for (unsigned int i = 1; lig - i >= 1 && get(t, col, lig - i) == symbole; ++i, ++sommeColonne)
 		;
 	//verification horizontale (<-->), on recherche dans les deux sens.
@@ -94,7 +94,7 @@ bool estVictoire(const T2d* t, char col, unsigned int lig) {
 		;
 	for (unsigned int i = 1; col + i <= 'g' && lig - i >= 1 && get(t, col + i, lig - i) == symbole; ++i, ++sommeDiagGauche)
 		;
-	if (sommeColonne >= 3 || sommeLigne >= 3 || sommeDiagGauche >= 3 || sommeDiagDroite >= 3) // si il y a un alignement (i.e 4 jetons alignÈs) on retourne vraie
+	if (sommeColonne >= 3 || sommeLigne >= 3 || sommeDiagGauche >= 3 || sommeDiagDroite >= 3) // si il y a un alignement (i.e 4 jetons align√©s) on retourne vraie
 		return true;
 	return false;
 }
@@ -114,7 +114,7 @@ unsigned int placerJeton(T2d* t, char col, char symbole) {
 char choixJoueur(T2d* t) { // nom de variables pas assez explicite
 	char choixColonne;
 	char largeMax = 'a' + getLargeur(t) - 1;
-	char c; //c sert ‡ vÈrifier que l'utilisateur entre un seul caractËre, ex : "aaaa" non acceptÈ.
+	char c; //c sert √† v√©rifier que l'utilisateur entre un seul caract√®re, ex : "aaaa" non accept√©.
 	printf("Entrez une colonne svp, ou entrer '#' pour sauvegarder et quitter.\n");
 	printf("Attention vous ne pouvez pas sauvegarder une partie lorsqu'elle est jouee contre l'IA.\n");
 	//while (((scanf("%c%c", &choixColonne, &c)) != 2 || c != '\n') && viderBuffer() || (choixColonne != '#' && choixColonne <'a') || choixColonne > largeMax || estRemplie(t, choixColonne)) {
@@ -147,35 +147,7 @@ char* coupsLegaux(T2d* t) {
 	return listeCoups;
 }
 
-int evaluerCoup(T2d* t, char col, unsigned int lig) {
-	const unsigned int alignementsMax = 4; //toutes les directions possibles
-	int sommmeAlignement[alignementsMax] = { 0 }; 
-	char symbole = get(t, col, lig); // on rÈcupËre le symbole du dernier jeton jouÈ
-	for (unsigned int i = 1; lig - i >= 1 && get(t, col, lig - i) == symbole; ++i, ++sommmeAlignement[0])
-		;
-	//verification horizontale (<-->), on recherche dans les deux sens.
-	for (unsigned int i = 1; col + i <= 'g' && get(t, col + i, lig) == symbole; ++i, ++sommmeAlignement[1])
-		;
-	for (unsigned int i = 1; col - i >= 'a' && get(t, col - i, lig) == symbole; ++i, ++sommmeAlignement[1])
-		;
-	//verification diagonale montante (/)
-	for (unsigned int i = 1; col + i <= 'g' && lig + i <= 6 && get(t, col + i, lig + i) == symbole; ++i, ++sommmeAlignement[2])
-		;
-	for (unsigned int i = 1; col - i >= 'a' && lig - i >= 1 && get(t, col - i, lig - i) == symbole; ++i, ++sommmeAlignement[2])
-		;
-	//verification diagonale descendante (\)
-	for (unsigned int i = 1; col - i >= 'a' && lig + i <= 6 && get(t, col - i, lig + i) == symbole; ++i, ++sommmeAlignement[3])
-		;
-	for (unsigned int i = 1; col + i <= 'g' && lig - i >= 1 && get(t, col + i, lig - i) == symbole; ++i, ++sommmeAlignement[3])
-		;
-	for (unsigned int i = 0; i < alignementsMax; ++i) {
-		// si 0 renvoie 1
-		// si 1 renvoie 5
-		// si 2 renvoie 50
-		//si 3 renvoie 1000
-	}
-	return 0;
-}
+
 
 const T2d copy(const T2d* t) {
 	T2d copie;
@@ -193,11 +165,11 @@ char checkWin(const T2d* t) {
 	unsigned largeur = getLargeur(t);
 	int caseVide = '.';
 	char largeMax = 'a' + largeur - 1;
-	for (int r = 1; r <= hauteur; r++) { // on itËre les lignes du bas vers le haut
-		for (char c = 'a'; c <= largeMax; c++) { // on itËre les colonnes de la gauche vers la droite
+	for (int r = 1; r <= hauteur; r++) { // on it√®re les lignes du bas vers le haut
+		for (char c = 'a'; c <= largeMax; c++) { // on it√®re les colonnes de la gauche vers la droite
 			char player = get(t, c, r);
 			if (player == caseVide)
-				continue; // on ne veut pas vÈrifier les cases vides
+				continue; // on ne veut pas v√©rifier les cases vides
 
 			if (c + 3 <= largeMax &&
 				player == get(t, c + 1, r) && // verif droite
@@ -257,7 +229,7 @@ char choixIA(T2d* grille, int prof, char symboleAdversaire, char symboleIA)
 	{
 		//On range dans s tous les coups possibles
 		char* s = coupsLegaux(grille);
-		//On mÈlange les coups alÈatoirement pour diversifier un peu les coups de l'IA entre les parties
+		//On m√©lange les coups al√©atoirement pour diversifier un peu les coups de l'IA entre les parties
 		melangeColonnes(s);
 		//On parcourt les colonnes
 		for (unsigned int i = 0; s[i]; ++i)
@@ -280,7 +252,7 @@ char choixIA(T2d* grille, int prof, char symboleAdversaire, char symboleIA)
 				meilleur_colonne = col;
 			}
 
-			//On libËre la mÈmoire
+			//On lib√®re la m√©moire
 			free(copie_grille.grille);
 			/*}*/
 		}
@@ -293,14 +265,14 @@ int Min(T2d* grille, int prof, int alpha, int beta, char symboleAdversaire, char
 {
 	int tmp;
 	char largeMax = 'a' + getLargeur(grille) - 1;
-	//Si on est ‡ la profondeur voulue, on retourne l'Èvaluation
+	//Si on est √† la profondeur voulue, on retourne l'√©valuation
 	if (prof == 0)
 	{
 		tmp = evalGrille(grille, symboleIA, prof);
 		return tmp;
 	}
 
-	//Si la partie est finie, on retourne l'Èvaluation de jeu
+	//Si la partie est finie, on retourne l'√©valuation de jeu
 	if (checkWin(grille) != '.')
 	{
 		tmp = evalGrille(grille, symboleIA, prof);
@@ -345,7 +317,7 @@ int Max(T2d* grille, int prof, int alpha, int beta, char symboleAdversaire, char
 		return tmp;
 	}
 
-	//Si la partie est finie, on retourne l'Èvaluation de jeu
+	//Si la partie est finie, on retourne l'√©valuation de jeu
 	if (checkWin(grille) != '.')
 	{
 		tmp = evalGrille(grille, symboleIA, prof);
@@ -389,10 +361,10 @@ void melangeColonnes(char* tableauColonnes) {
 }
 
 unsigned int cmptJetons(const T2d* t, char col, unsigned int lig, unsigned int deltacol, unsigned int deltalig, char symbole) {
-	// delta reprÈsente la direction, par exemple pour deltacol = 1 et deltalig = 0, on cherche vers la droite
-	// on va alors parcourir la grille dans le sens donnÈe et rechercher des alignements de jetons (de mÍme symbole que l'IA)
-	// on veut retourner la somme des scores des alignements trouvÈs dans la direction donnÈe
-	// imaginons une grille 12*12, on pourrait avoir plusieurs alignements de 3 sur une mÍme ligne
+	// delta repr√©sente la direction, par exemple pour deltacol = 1 et deltalig = 0, on cherche vers la droite
+	// on va alors parcourir la grille dans le sens donn√©e et rechercher des alignements de jetons (de m√™me symbole que l'IA)
+	// on veut retourner la somme des scores des alignements trouv√©s dans la direction donn√©e
+	// imaginons une grille 12*12, on pourrait avoir plusieurs alignements de 3 sur une m√™me ligne
 	// ou bien plusieurs alignements de 2 et un alignement de 3 etc ...
 	unsigned int compteur = 0;
 	unsigned int cmptVides = 0;
@@ -410,11 +382,11 @@ unsigned int cmptJetons(const T2d* t, char col, unsigned int lig, unsigned int d
 		if (actual == symboleAdverse) {
 			// s'il y a assez d'espace avant pour poser 4 jetons identiques
 			// on garde trace de l'alignement qu'on avait jusqu'ici
-			// en ajoutant ‡ la somme le score de cet alignement
+			// en ajoutant √† la somme le score de cet alignement
 			if (compteur + cmptVides >= 4) {
 				somme += evalJetons(compteur);
 			}
-			// on reset les compteurs puisqu'on est tombÈ sur un jeton adverse
+			// on reset les compteurs puisqu'on est tomb√© sur un jeton adverse
 			compteur = 0;
 			cmptVides = 0;
 		}
