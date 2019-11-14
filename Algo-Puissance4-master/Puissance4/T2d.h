@@ -6,8 +6,8 @@
 #define TAILLE_MAX_GRILLE 144 //12*12
 #define PROFONDEUR 8 //cout d avance observe par l IA
 
-// La structure T2d représente un tableau
-// de char à 2 dimensions
+// La structure T2d reprÃ©sente un tableau
+// de char Ã  2 dimensions
 // '.' case vide
 // 'X' joueur 1
 // 'O' joueur 2
@@ -28,24 +28,21 @@ void set(T2d*, char col, unsigned int lig, char symbole);
 char get(const T2d*, char col, unsigned int lig);
 void liberer(T2d*);
 void toString(const T2d*, char*);
-bool estVictoire(const T2d*, char col, unsigned int lig); // cette fonction prend en paramètre les coordonnées du dernier jeton joué et évalue les jetons qui l'entourent.
+bool estVictoire(const T2d*, char col, unsigned int lig); // cette fonction prend en paramÃ¨tre les coordonnÃ©es du dernier jeton jouÃ© et Ã©value les jetons qui l'entourent.
 void viderGrille(T2d*);
 char choixJoueur(T2d*);// retourne la colonne choisie
 int viderBuffer();
 bool estRemplie(T2d*,char col);
-unsigned int placerJeton(T2d*, char col, char symbole); // retourne la ligne dans laquelle le jeton est placée
+unsigned int placerJeton(T2d*, char col, char symbole); // retourne la ligne dans laquelle le jeton est placÃ©e
 
 bool grillePleine(T2d* t);
 
 /* FONCTIONS POUR L'IA*/
-void annulerCoup(T2d*, char col); // annule le dernier jeton placé dans col.
-char* coupsLegaux(T2d*); // retourne la liste des coups légaux pour un état du jeu
-int evaluerCoup(T2d*, char col, unsigned int lig);
-
+void annulerCoup(T2d*, char col); // annule le dernier jeton placÃ© dans col.
+char* coupsLegaux(T2d*); // retourne la liste des coups lÃ©gaux pour un Ã©tat du jeu
 char checkWin(const T2d* t);// renvoie le vainqueur si un alignement de 4 existe dans la grille, sinon renvoie la case vide '.'
-const T2d copy(const T2d* t);// effectue une copie de l'état de la grille t pour simuler les coups de l'ia.
+const T2d copy(const T2d* t);// effectue une copie de l'Ã©tat de la grille t pour simuler les coups de l'ia.
 void initSeed();
-int heuristicFaible(T2d* t, char symbole, int prof);// Simplement basée sur gagné, nul ou perdu
 char choixIA(T2d* jeu, int prof, char symboleAdverse, char symboleIA);// renvoie la meilleure colonne
 int Min(T2d* grille, int prof, int alpha, int beta, char symboleAdverse, char symboleIA);
 int Max(T2d* grille, int prof, int alpha, int beta, char symboleAdverse, char symboleIA);
